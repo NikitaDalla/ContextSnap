@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:padding="12dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView android:id="@+id/textStatus" android:textStyle="bold" android:paddingBottom="4dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <EditText android:id="@+id/editSessionName" android:hint="Session name (optional)"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+    <ListView android:id="@+id/listSensors" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" />
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/buttonStart" android:text="Start" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content" />
+        <Button android:id="@+id/buttonStop" android:text="Stop" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:id="@+id/buttonCamera" android:text="Camera" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content" />
+        <Button android:id="@+id/buttonHistory" android:text="History" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content" />
+        <Button android:id="@+id/buttonLogout" android:text="Logout" android:layout_width="0dp"
+            android:layout_weight="1" android:layout_height="wrap_content" />
+    </LinearLayout>
+    <Button android:id="@+id/buttonFingerprint" android:text="Enable fingerprint login"
+        android:layout_width="match_parent" android:layout_height="wrap_content" />
+</LinearLayout>
