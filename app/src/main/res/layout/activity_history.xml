@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:background="@color/brand_primary_dark"
+        app:title="History" app:titleTextColor="@color/white"
+        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" />
+
+    <FrameLayout
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <ListView
+            android:id="@+id/listHistory"
+            android:divider="@null" android:dividerHeight="0dp"
+            android:clipToPadding="false" android:paddingTop="8dp" android:paddingBottom="8dp"
+            android:layout_width="match_parent" android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/textEmpty" android:visibility="gone"
+            android:text="Nothing recorded yet.\nRecord a session or take a photo first."
+            android:gravity="center" android:textColor="@color/text_secondary"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </FrameLayout>
+</LinearLayout>

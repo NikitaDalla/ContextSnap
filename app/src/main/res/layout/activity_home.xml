@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:background="@color/brand_primary_dark"
+        app:title="Live Sensor Dashboard" app:titleTextColor="@color/white"
+        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" />
+
+    <LinearLayout
+        android:orientation="vertical" android:padding="12dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            app:cardBackgroundColor="@color/brand_primary_container" app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textStatus" android:padding="14dp"
+                android:textStyle="bold" android:textColor="@color/text_secondary"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent" android:layout_height="wrap_content" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="Session name (optional)" android:layout_marginTop="10dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editSessionName" android:inputType="text"
+                android:layout_width="match_parent" android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:text="Every sensor shows a live value. Tick the ones you want to save."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/text_secondary" android:layout_marginTop="8dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listSensors"
+        android:divider="@null" android:dividerHeight="0dp"
+        android:clipToPadding="false" android:paddingBottom="8dp"
+        android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" />
+
+    <LinearLayout
+        android:orientation="vertical" android:padding="12dp"
+        android:background="@color/card_bg"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonStart" android:text="▶  Start"
+                app:cornerRadius="12dp" android:layout_marginEnd="6dp"
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="52dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonStop" android:text="■  Stop"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                app:cornerRadius="12dp" android:layout_marginStart="6dp"
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="52dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_marginTop="8dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonCamera" android:text="📷 Camera"
+                style="@style/Widget.Material3.Button.TonalButton"
+                app:cornerRadius="12dp" android:layout_marginEnd="4dp"
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonHistory" android:text="🕘 History"
+                style="@style/Widget.Material3.Button.TonalButton"
+                app:cornerRadius="12dp" android:layout_marginStart="4dp" android:layout_marginEnd="4dp"
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonLogout" android:text="Logout"
+                style="@style/Widget.Material3.Button.TonalButton"
+                app:cornerRadius="12dp" android:layout_marginStart="4dp"
+                android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonFingerprint" android:text="Enable fingerprint login"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

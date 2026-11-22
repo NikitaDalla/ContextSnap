@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical" android:gravity="center_horizontal|center_vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <TextView
+            android:text="CS" android:textSize="26sp" android:textStyle="bold"
+            android:textColor="@color/white" android:gravity="center"
+            android:background="@drawable/bg_logo"
+            android:layout_width="72dp" android:layout_height="72dp" />
+
+        <TextView
+            android:text="Context Snap"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+            android:textColor="@color/text_primary" android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Sensor and camera data logger"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <com.google.android.material.card.MaterialCardView
+            app:cardBackgroundColor="@color/card_bg" app:cardCornerRadius="16dp"
+            app:cardElevation="0dp" app:strokeColor="@color/card_stroke" app:strokeWidth="1dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical" android:padding="20dp"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Welcome back"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:hint="Email"
+                    android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editEmail" android:inputType="textEmailAddress"
+                        android:layout_width="match_parent" android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    app:endIconMode="password_toggle"
+                    android:hint="Password" android:layout_marginTop="12dp"
+                    android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editPassword" android:inputType="textPassword"
+                        android:layout_width="match_parent" android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textError"
+                    android:textColor="@color/error_red"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonLogin" android:text="Login"
+                    app:cornerRadius="12dp" android:layout_marginTop="12dp"
+                    android:layout_width="match_parent" android:layout_height="52dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonFingerprint" android:text="Login with fingerprint"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    app:cornerRadius="12dp" android:visibility="gone" android:layout_marginTop="8dp"
+                    android:layout_width="match_parent" android:layout_height="52dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/textForgot" android:text="Forgot password?"
+            style="@style/Widget.Material3.Button.TextButton" android:layout_marginTop="12dp"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/textSignUp" android:text="New here? Create an account"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>
