@@ -11,21 +11,31 @@ jobs:
       - name: Get the code
         uses: actions/checkout@v4
 
-      - name: Find the project folder
+      - name: Unpack and find the project
         id: find
         run: |
-          f=$(find . -name settings.gradle.kts -not -path "./.git/*" | head -1)
+          # If a .zip file was uploaded to the repository, unpack it first.
+          find . -maxdepth 2 -name "*.zip" -not -path "./.git/*" -print0 | while IFS= read -r -d '' z; do
+            echo "Unpacking: $z"
+            unzip -o -q "$z" -d unpacked || true
+          done
+          f=$(find unpacked -name settings.gradle.kts 2>/dev/null | head -1)
           if [ -z "$f" ]; then
-            echo "ERROR: settings.gradle.kts was not found - the project files were not uploaded."
-            echo "Files in the repository:"
+            f=$(find . -name settings.gradle.kts -not -path "./.git/*" | head -1)
+          fi
+          if [ -z "$f" ]; then
+            echo "::error::No project found. Upload ContextSnap_GitHub.zip (without unzipping it) to the repository."
             find . -not -path "./.git/*" -type f | head -60
             exit 1
           fi
           dir=$(dirname "$f")
           echo "Project folder: $dir"
+          if [ ! -f "$dir/app/src/main/AndroidManifest.xml" ]; then
+            echo "::error::AndroidManifest.xml is missing from $dir/app/src/main - some files were not uploaded."
+            find "$dir" -type f | head -80
+            exit 1
+          fi
           echo "dir=$dir" >> "$GITHUB_OUTPUT"
-          ls -la "$dir"
-          find "$dir/app/src" -type f | head -60
 
       - name: Install Java 17
         uses: actions/setup-java@v4
@@ -44,9 +54,63 @@ jobs:
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0" > /dev/null || true
 
-      - name: Build the debug APK
+      - name: Download the MobileNet model
         working-directory: ${{ steps.find.outputs.dir }}
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: |
+          mkdir -p app/src/main/assets
+          if [ -s app/src/main/assets/mobilenet.tflite ]; then
+            echo "A model file is already in the project - using it."
+            exit 0
+          fi
+          for url in \
+            "https://raw.githubusercontent.com/tensorflow/tflite-support/master/tensorflow_lite_support/cc/test/testdata/task/vision/mobilenet_v2_1.0_224.tflite" \
+            "https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/image_classification/android/mobilenet_v1_1.0_224_quantized_1_metadata_1.tflite" \
+            "https://tfhub.dev/tensorflow/lite-model/mobilenet_v2_1.0_224/1/metadata/1?lite-format=tflite" \
+            "https://storage.googleapis.com/download.tensorflow.org/models/tflite/task_library/image_classification/android/mobilenet_v2_1.0_224_quantized_1_metadata_1.tflite"
+          do
+            echo "Trying: $url"
+            rm -f /tmp/model.tflite
+            if curl -fsSL --retry 2 --max-time 180 -o /tmp/model.tflite "$url" \
+               && [ "$(stat -c%s /tmp/model.tflite)" -gt 1000000 ] \
+               && head -c 8 /tmp/model.tflite | grep -aq "TFL3"; then
+              cp /tmp/model.tflite app/src/main/assets/mobilenet.tflite
+              echo "Model downloaded OK ($(stat -c%s app/src/main/assets/mobilenet.tflite) bytes) from $url"
+              exit 0
+            fi
+            echo "That address did not work, trying the next one."
+          done
+          echo "::warning::Could not download a MobileNet model. The app will still build, but photos cannot be classified. See README_GITHUB.md (manual model step)."
+
+      - name: Build the debug APK
+        shell: bash
+        working-directory: ${{ steps.find.outputs.dir }}
+        run: gradle assembleDebug --no-daemon --stacktrace 2>&1 | tee build.log
+
+      - name: Show the real error (runs only if the build failed)
+        if: failure()
+        shell: bash
+        working-directory: ${{ steps.find.outputs.dir }}
+        run: |
+          {
+            echo "## Build errors"
+            echo "### Code and resource errors"
+            echo '```'
+            (grep -E "^e: |error:" build.log | head -30) || true
+            echo '```'
+            echo "### Gradle message"
+            echo '```'
+            (sed -n '/What went wrong/,/\* Try/p' build.log | head -40) || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          (grep -E "^e: |error:" build.log | head -8 | while read -r line; do echo "::error::$line"; done) || true
+
+      - name: Save the full log (only if the build failed)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: ${{ steps.find.outputs.dir }}/build.log
+          if-no-files-found: ignore
 
       - name: Save the APK so you can download it
         uses: actions/upload-artifact@v4
